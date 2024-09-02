@@ -1,0 +1,6 @@
+-install node.js
+-move to project dir 
+-run  "npm install"
+-run  "npm run dev"
+-test mail: "dreamuser99@gmail.com"
+-test psw: "saw2024"
