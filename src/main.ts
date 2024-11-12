@@ -1,5 +1,7 @@
+import { mount } from 'svelte'
 import './app.css'
 import App from './App.svelte'
+import Toolbar from './Toolbar.svelte'
 
 
 Notification.requestPermission(permission => {  
@@ -21,7 +23,7 @@ if ("serviceWorker" in navigator) {
 
   navigator.serviceWorker.onmessage = event => {  
     const message = JSON.parse(event.data);     
-    if (message && message.type.includes('/api/v1/posts')) {  
+    if (message && (message.type.includes('/api/v0/posts') || message.type.includes('/api/v0/profiles'))) {  
       console.log("Updated posts from web worker", message.data)
     }
 
@@ -45,8 +47,14 @@ export function sendNotification(message: string) {
   }
 }
 
-const app = new App({
-  target: document.getElementById('app'),
+
+const app = mount(App, {
+  target: document.getElementById('app')!,
 })
+
+const fixedSection = mount(Toolbar, {
+  target: document.getElementById('toolbar')!,
+  props: { showAddPostForm: false } 
+});
 
 export default app

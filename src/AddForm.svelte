@@ -34,9 +34,9 @@
     };
 
     
-
+    
     const submitPost = async () => {
-        if (fileInput.files.length === 3) {
+        if (fileInput.files!=null && fileInput.files.length === 3) {
             sendNotification("Uploading your post");
             const file1 = fileInput.files[0];
             const photoURL1 = await uploadPhoto(file1);
@@ -44,8 +44,7 @@
             const photoURL2 = await uploadPhoto(file2);
             const file3 = fileInput.files[2];
             const photoURL3 = await uploadPhoto(file3);
-
-            await posts.addPost(currentUser, bio, dove, price, photoURL1, photoURL2, photoURL3);
+            if (currentUser!=null) await posts.addPost(currentUser, bio, dove, price, photoURL1, photoURL2, photoURL3);
             bio = "";
             fileInput.value = ""; 
             price = "";
@@ -64,31 +63,21 @@
         margin: 0 auto;
     }
 
-    input, textarea {
+    input{
         display: block;
         width: 95px;
         margin-bottom: 10px;
         padding: 10px;
         border: 1px;
     }
-
-    button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background-color: #0056b3;
-    }
+    
 </style>
 
 <div class="form-container">
     <form on:submit|preventDefault={submitPost}>
         <input type="text" bind:value={bio} placeholder="Bio" required />
         <input type="text" bind:value={price} placeholder="Price" required />
-        <input type="text" bind:value={dove} placeholder="Dove" required />
+        <input type="text" bind:value={dove} placeholder="Wheree" required />
         <input type="file" bind:this={fileInput} accept="image/*" multiple required />
         <button type="submit">Submit</button>
     </form>

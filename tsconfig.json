@@ -14,9 +14,8 @@
     "allowJs": true,
     "checkJs": true,
     "isolatedModules": true,
-    "verbatimModuleSyntax": true,  
-    "ignoreDeprecations": "5.0"
+    "moduleDetection": "force"
   },
-  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
+  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

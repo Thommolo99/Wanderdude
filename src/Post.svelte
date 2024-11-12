@@ -1,8 +1,10 @@
 <script lang="ts">
     import { posts } from './store'; 
     import { userStore } from "./loginStore";
-
+    import { setUserProfileToShow, setProfileView} from "./store";
+    
     $: currentUser = $userStore ? $userStore.email : "";
+    $: currentUserIsAuthor = currentUser === post.user;
 
     export let post: {
         id: string;
@@ -15,11 +17,18 @@
         photoURL3: string;
         prenotazioni: number;
         prenotati: string[];
-  };
+    };
 
   const prenota = () => {
-        posts.bookPost(post,currentUser);
+        if (currentUser != null) posts.bookPost(post,currentUser); 
   };
+
+  function viewProfile() {
+        if (post.user != null) {
+            setUserProfileToShow(post.user);
+        }
+        setProfileView(1);
+    }
  
 
 </script>
@@ -51,8 +60,8 @@
         width: 100%; 
         max-width: 1000px;
         margin: 20px auto; 
-        background-color: #fbfdfebf;
-        box-shadow: 5px 4px 8px rgba(0, 234, 246, 0.656);
+        background-color: #EEE0D7;
+        box-shadow: 5px 4px 8px rgba(0, 100, 105, 0.715);
         border-radius: 15px;
         overflow: hidden; 
     }
@@ -74,11 +83,20 @@
     }
 
     .info p strong {
-        color: #1c849ebf;
+        color:  #04384B;
     }
 
     button{
         width: 120px; 
+    }
+
+    .clickable {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    .clickable:hover {
+        color: #04384B;
     }
 
 </style>
@@ -92,12 +110,30 @@
             </div>
     {/if}
     <div class="info">
-        <p><strong>User:</strong> {post.user}</p>
-        <p><strong>Bio:</strong> {post.bio}</p>
-        <p><strong>Prezzo:</strong> {post.prezzo} €</p>
-        <p><strong>Dove:</strong> {post.dove}</p>
+        {#if currentUserIsAuthor}
+            <p class="clickable" on:click={viewProfile}><strong>User: </strong> you </p>
+        {:else}
+            <p class="clickable" on:click={viewProfile}><strong>User: </strong> {post.user}</p>
+        {/if}
+        <p><strong>Bio: </strong> {post.bio}</p>
+        <p><strong>Price: </strong> {post.prezzo} €</p>
+        <p><strong>Where: </strong> {post.dove}</p>
         <br/>
-        <p><button class="book-button" on:click={prenota}>Interessed! ({post.prenotazioni})</button></p>
-    </div>
-   
+        <p> {#if currentUserIsAuthor}
+                {#if post.prenotazioni != 0}
+                    <strong>Who like this post?</strong>
+                {:else}
+                    <strong>Currently no like</strong>
+                {/if}
+                {#each post.prenotati as user}
+                    <p>{user}</p>
+                {/each}
+       
+            {:else}
+                 <button on:click={prenota}>
+                     Likes ({post.prenotazioni})
+                 </button>
+            {/if}
+        </p>
+   </div>
 </div>

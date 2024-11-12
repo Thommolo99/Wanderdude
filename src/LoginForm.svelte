@@ -1,54 +1,56 @@
 <script lang="ts">
     import { userStore } from './loginStore';
-
     let email = "";
     let pwd = "";
-
 </script>
 
 <style>
-    body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
-    }
-
     .container {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 100%;
+        height: 100vh;
         width: 100%;
-       
     }
-  
-    .logo {
-        max-width: 30%;
-        height: 50px;
-        margin-bottom: 20px;
+
+    .input-group,
+    .button-group {
+        display: flex;
+        flex-direction: row; 
+        gap: 0.5rem;
+        width: 100%;
+        max-width: 500px;
+        justify-content: center;
+        margin-bottom:1rem;
     }
+
+    .input-group{
+        margin-top:5rem;
+    }
+    
+
+    input {
+        padding: 0.5rem;
+        font-size: 1rem;
+        width: 100%;
+        max-width: 150px;
+    }
+
+    
 </style>
 
-<html>
-    <head>
-    </head>
-    <body>
-        <div class=container>
-            <form on:submit|preventDefault>
-                <label for="username">Username:</label>
-                <input id="username" bind:value={email} type="text" />
-                <br />
-                <label for="pwd">Password:</label>
-                <input id="pwd" bind:value={pwd} type="password" />
-                <br />
-                <button on:click={() => userStore.register(email, pwd)}> Register</button>
-                <button on:click={() => userStore.login(email, pwd)}> Login </button>
-                <button on:click={userStore.googleLogin}>Google</button>
-            </form>
+<div class="container">
+    <form on:submit|preventDefault>
+        <h1>Welcome! Please log in or register.</h1>
+        <div class="input-group">
+            <input id="email" bind:value={email} type="text" placeholder="e-mail"/>
+            <input id="pwd" bind:value={pwd} type="password" placeholder="password"/>
         </div>
-    </body>
-</html>
-
-
+        <div class="button-group">
+            <button on:click={() => userStore.login(email, pwd)}>Login</button>
+            <button on:click={() => userStore.register(email, pwd)}>Register</button>
+            <button on:click={userStore.googleLogin}>Google</button>
+        </div>
+    </form>
+</div>
